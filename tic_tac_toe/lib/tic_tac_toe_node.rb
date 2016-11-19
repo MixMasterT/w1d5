@@ -1,6 +1,8 @@
 require_relative 'tic_tac_toe'
 
 class TicTacToeNode
+
+  attr_reader :board, :next_mover_mark, :prev_move_pos
   def initialize(board, next_mover_mark, prev_move_pos = nil)
     @board = board
     @next_mover_mark = next_mover_mark
@@ -8,10 +10,25 @@ class TicTacToeNode
   end
 
   def losing_node?(evaluator)
-
+    if @board.over?
+      @board.winner != evaluator
+    else
+      other_evaluator = (evaluator == :x ? :o : :x)
+      children.any? do |child|
+        child.winning_node?(other_evaluator)
+      end
+    end
   end
 
   def winning_node?(evaluator)
+    if @board.over?
+      @board.winner == evaluator
+    else
+      other_evaluator = (evaluator == :x ? :o : :x)
+      children.any? do |child|
+        child.losing_node?(other_evaluator)
+      end
+    end
   end
 
   # This method generates an array of all moves that can be made after
@@ -32,11 +49,11 @@ class TicTacToeNode
     child_arr
   end
 
-  def inspect
-    @board.rows.each { |row| p row }
-  end
+  # def inspect
+  #   @board.rows.each { |row| p row }
+  # end
 end
-
-b = Board.new
-ttn = TicTacToeNode.new(b, :x, nil)
-p ttn.children
+#
+# b = Board.new
+# ttn = TicTacToeNode.new(b, :x, nil)
+# p ttn.children
