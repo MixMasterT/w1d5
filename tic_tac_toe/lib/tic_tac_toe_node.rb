@@ -25,7 +25,7 @@ class TicTacToeNode
       @board.winner == evaluator
     else
       other_evaluator = (evaluator == :x ? :o : :x)
-      children.any? do |child|
+      children.all? do |child|
         child.losing_node?(other_evaluator)
       end
     end
@@ -49,11 +49,14 @@ class TicTacToeNode
     child_arr
   end
 
-  # def inspect
-  #   @board.rows.each { |row| p row }
-  # end
+  def inspect
+    @board.rows.each { |row| p row }
+  end
 end
-#
-# b = Board.new
-# ttn = TicTacToeNode.new(b, :x, nil)
-# p ttn.children
+
+b = Board.new
+b[[0,0]] = :x
+b[[1,0]] = :o
+b[[1,1]] = :o
+ttn = TicTacToeNode.new(b, :x, nil)
+p ttn.children

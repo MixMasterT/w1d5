@@ -1,5 +1,5 @@
 # DON'T EDIT ME!
-
+require_relative 'super_computer_player'
 class Board
   attr_reader :rows
 
@@ -79,6 +79,15 @@ class Board
   def won?
     !winner.nil?
   end
+
+  def render
+    rows.each_with_index do |r, i|
+      n_r = []
+      r.each { |v| n_r << (v == nil ? " " : v) }
+      puts "  #{n_r.join(" | ")}"
+      puts "-------------" unless i == 2
+    end
+  end
 end
 
 # Notice how the Board has the basic rules of the game, but no logic
@@ -113,7 +122,7 @@ class TicTacToe
 
   def show
     # not very pretty printing!
-    self.board.rows.each { |row| p row }
+    self.board.render
   end
 
   private
@@ -208,7 +217,7 @@ end
 if __FILE__ == $PROGRAM_NAME
   puts "Play the dumb computer!"
   hp = HumanPlayer.new("Ned")
-  cp = ComputerPlayer.new
+  cp = SuperComputerPlayer.new
 
   TicTacToe.new(hp, cp).run
 end
